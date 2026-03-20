@@ -7,7 +7,7 @@ Flow:
      - H1 via Mann-Whitney U (pre-reg Q5, robust to outliers)
      - H2 via OLS + HC1 (pre-reg Q5)
   2. COOK'S DISTANCE DIAGNOSTIC: Identify influential observations
-  3. SENSITIVITY ANALYSIS: Exclude protest response (Cook's D > 4/n)
+  3. SENSITIVITY ANALYSIS: Exclude observations with Cook’s D > 10 × (4/n), a deliberately conservative threshold used to identify only clearly influential protest responses.
      - Re-run OLS, anchor decomposition, bootstrap
   4. OUTPUT: Tables, figures, and auto-generated report text
 
