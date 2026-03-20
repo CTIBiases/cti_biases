@@ -102,13 +102,6 @@ Important derived columns include:
   Auto-generated narrative analysis log with the main test results, Cook's-distance diagnostic,
   sensitivity analysis, and summary statements.
 
-### Existing repository README
-
-- `README.md`
-
-This file is currently minimal and only states the repository name and a one-line description.
-It does not document the workflow or file roles in a reviewer-friendly way.
-
 ---
 
 ## End-to-end workflow
@@ -217,7 +210,7 @@ It does the following:
 ### Outputs and their meaning
 
 #### `REPORT.txt`
-Human-readable audit log of the analysis. Contains:
+Audit log of the analysis. Contains:
 - total completed and per-protocol counts,
 - H1 and H2 outputs,
 - Cook's-distance ranking,
@@ -270,8 +263,6 @@ Expected headline outputs after successful execution:
 - `fig_boxplot_anchor_shift.png`
 - `fig_gap_decomposition.png`
 - `REPORT.txt`
-
-The scripts ran successfully in local re-execution with no code changes.
 
 ---
 
@@ -335,11 +326,4 @@ If you want the data provenance path:
 3. Confirm how exclusion, corner handling, and valuation extraction work.
 
 ---
-
-## Known caveats worth noticing
-
-- The repository `README.md` is currently too sparse for external review and should be replaced by a fuller document such as this one.
-- `analyze_results.py` uses a **10 x (4/n)** Cook's-distance rule for the sensitivity exclusion, while part of the script docstring mentions `Cook's D > 4/n`. The implemented code is the authoritative behavior.
-- The methodology text in the paper mentions `eta^2_p` for H2, but the analysis script does not compute or export that effect size.
-- The paper PDF and repository are numerically aligned on the main sensitivity results, but not every repository figure is embedded in the PDF.
 
