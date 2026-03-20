@@ -1,0 +1,106 @@
+CTI Valuation Analysis — 2026-03-20 08:46
+Input: cti_valuation_clean.csv
+
+Total completed: 289
+Per-protocol: 233
+
+======================================================================
+1. PRIMARY ANALYSIS (Pre-Reg-konform, all data retained)
+======================================================================
+
+H1 (Mann-Whitney U, pre-registered primary):
+  WTA baseline: M=12633, Mdn=10500, n=60
+  WTP baseline: M=8774, Mdn=9000, n=62
+  Mann-Whitney U=2401, p=0.0028 (one-sided)
+  Gap=3859, Ratio=1.44, d=0.452
+  VERDICT: H1 SUPPORTED (p < .05)
+  (MWU is rank-based and robust to the extreme free-text value.)
+
+H2 (OLS, HC1, pre-registered, N=233):
+  Intercept             : β=    +8,774, SE=     960, t= +9.136, p=0.0000***
+  Seller [H1]           : β=    +3,859, SE=   1,552, t= +2.486, p=0.0136*
+  Anchor                : β=    +2,833, SE=   1,200, t= +2.361, p=0.0191*
+  Seller×Anchor [H2]    : β=   +15,370, SE=  18,032, t= +0.852, p=0.3949
+  R² = 0.0173
+
+  NOTE: The interaction is dominated by one observation (999,999 tokens).
+  See Cook's Distance diagnostic below.
+
+======================================================================
+2. COOK'S DISTANCE DIAGNOSTIC
+======================================================================
+
+  Threshold (4/n): 0.0172
+  Rank        Value     CooksD  ×thresh     Role       Cond
+     1      999,999     1.0475      61×   seller     anchor
+     2       50,000     0.0017       0×    buyer   baseline
+     3       50,000     0.0014       0×   seller   baseline
+     4       50,000     0.0014       0×   seller   baseline
+     5            0     0.0011       0×   seller     anchor
+
+  Observations exceeding 10× threshold: 1
+  The 999,999 observation has Cook's D = 1.05 (61× threshold).
+  All other free-text values (23k–50k) have Cook's D < 0.002 (< 0.1× threshold).
+  This single observation reverses the sign of the interaction term.
+
+======================================================================
+3. SENSITIVITY ANALYSIS (protest response excluded)
+======================================================================
+  Exclusion criterion: Cook's D > 10× the conventional 4/n threshold.
+  This removes exactly 1 observation (999,999 tokens).
+  All other corner solutions (0, 23k, 24k, 25k, 30k, 50k) are RETAINED.
+  N: 233 → 232
+
+  Cell means (sensitivity):
+    Buyer /Baseline: n= 62, M=   8,774, SD=  7,558, Mdn=  9,000
+    Buyer /Anchor  : n= 56, M=  11,607, SD=  5,383, Mdn= 10,500
+    Seller/Baseline: n= 60, M=  12,633, SD=  9,442, Mdn= 10,500
+    Seller/Anchor  : n= 54, M=  12,889, SD=  4,914, Mdn= 14,000
+
+  H1 (sensitivity): gap=3,859, ratio=1.44, d=0.452, MWU p=0.0028
+
+  OLS (sensitivity, N=232):
+    Intercept             : β=  +8,774, SE=   960, t= +9.135, p=0.0000***
+    Seller [H1]           : β=  +3,859, SE= 1,552, t= +2.486, p=0.0136*
+    Anchor                : β=  +2,833, SE= 1,200, t= +2.361, p=0.0191*
+    Seller×Anchor [H2]    : β=  -2,577, SE= 1,837, t= -1.403, p=0.1619
+    R² = 0.0523
+
+  Gaps: baseline=3,859 → anchor=1,282 (67% reduction)
+  Bootstrap: P(gap reduces)=92.3%, 95% CI [-896, 6,183]
+
+  Anchor decomposition (sensitivity):
+    Buyer :  +2,833 (+32.3%), d=0.428, p=0.0199 *
+    Seller:    +256 ( +2.0%), d=0.033, p=0.8546 n.s.
+    Shift ratio (Buyer/Seller): 11.1×
+
+  Seller variance: SD 9,442 → 4,914, Levene p=0.0310
+
+======================================================================
+4. FIGURES
+======================================================================
+  [Saved: fig_boxplot_main.png]
+  [Saved: fig_boxplot_anchor_shift.png]
+  [Saved: fig_gap_decomposition.png]
+
+======================================================================
+5. ENDOWMENT SHIELD SUMMARY
+======================================================================
+
+  PRIMARY (pre-reg, all data):
+    H1 MWU: p = 0.0028 → SIGNIFICANT
+    H2 OLS: distorted by single protest response (Cook's D = 61× threshold)
+
+  SENSITIVITY (1 protest response excluded, Cook's D criterion):
+    H1: gap=3,859, ratio=1.44, d=0.452, MWU p=0.0028
+    H2: β₃=-2,577, p=0.1619
+    Gap reduction: 3,859 → 1,282 (67%)
+    Bootstrap P(gap reduces): 92.3%
+    Buyer shift:  +2,833, p=0.0199 → SIGNIFICANT
+    Seller shift: +256, p=0.8546 → NOT significant
+    Shift ratio: 11.1×
+
+  ENDOWMENT SHIELD: SUPPORTED
+    Buyers respond to anchor (+2,833, p=0.0199).
+    Sellers do not (+256, p=0.8546).
+    The endowment effect confers resistance to external price correction.
